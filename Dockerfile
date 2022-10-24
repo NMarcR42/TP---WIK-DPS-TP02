@@ -1,11 +1,8 @@
 FROM node:lts-alpine
-ENV NODE_ENV=production
 WORKDIR /usr/src/app
-COPY ["package.json", "package-lock.json*", "npm-shrinkwrap.json*", "./"]
-RUN npm install --production --silent && mv node_modules ../
+COPY ["package.json", "package-lock.json*","tsconfig.json", "./"]
+RUN npm install
 COPY . .
 EXPOSE 3000
-RUN chown -R node /usr/src/app
-# RUN 
-USER node
-CMD ["npm", "index.js"]
+RUN npx tsc
+CMD ["node","build/index.js"]
